@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -7,10 +8,17 @@ load_dotenv()
 _client = None
 
 
+def _get_secret(key: str) -> str | None:
+    try:
+        return st.secrets[key]
+    except (KeyError, FileNotFoundError):
+        return os.getenv(key)
+
+
 def _get_client():
     global _client
     if _client is None:
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = _get_secret("OPENAI_API_KEY")
         if not api_key:
             raise EnvironmentError(
                 "OPENAI_API_KEY not found. Add it to your .env file."

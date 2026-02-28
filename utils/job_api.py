@@ -2,7 +2,17 @@ import html
 import os
 import re
 import requests
+import streamlit as st
 from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def _get_secret(key: str) -> str | None:
+    try:
+        return st.secrets[key]
+    except (KeyError, FileNotFoundError):
+        return os.getenv(key)
 
 
 def _clean_html(text: str) -> str:
@@ -10,8 +20,6 @@ def _clean_html(text: str) -> str:
     text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
-
-load_dotenv()
 
 FALLBACK_JOBS = [
     {
@@ -42,8 +50,8 @@ FALLBACK_JOBS = [
 
 
 def fetch_jobs(zip_code: str, keywords: str) -> list[dict]:
-    app_id = os.getenv("ADZUNA_APP_ID")
-    app_key = os.getenv("ADZUNA_API_KEY")
+    app_id = _get_secret("ADZUNA_APP_ID")
+    app_key = _get_secret("ADZUNA_API_KEY")
 
     if not app_id or not app_key:
         return FALLBACK_JOBS
