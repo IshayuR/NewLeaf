@@ -11,7 +11,7 @@ _client = None
 def _get_secret(key: str) -> str | None:
     try:
         return st.secrets[key]
-    except (KeyError, FileNotFoundError):
+    except Exception:
         return os.getenv(key)
 
 
