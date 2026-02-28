@@ -258,9 +258,10 @@ div[data-testid="stExpander"] summary {
     border: 1px solid var(--nl-border);
 }
 
-/* ── Hide only the hamburger menu, footer, and heading anchors ── */
+/* ── Hide only the hamburger menu, footer, heading anchors, and input instructions ── */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
+div[data-testid="InputInstructions"] {display: none !important;}
 .stMarkdown a[href^="#"],
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     display: none !important;
